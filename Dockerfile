@@ -26,4 +26,4 @@ COPY ./package.json bun.lockb /app/
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 WORKDIR /app
-CMD ["bun", "run", "start"]
+CMD bun run db:migrate && bun run start
