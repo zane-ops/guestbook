@@ -6,4 +6,9 @@ export default defineConfig({
 		port: 5174,
 	},
 	plugins: [reactRouter()],
+	resolve: {
+		alias: {
+			"react-dom/server": "react-dom/server.node",
+		},
+	},
 });
