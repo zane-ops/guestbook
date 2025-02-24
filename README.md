@@ -15,13 +15,16 @@ A modern, production-ready template for building full-stack React applications u
 
 ## Getting Started
 
+### Prerequisites
+
+- [Bun](https://bun.sh) >= 1.1.45
 
 ### Installation
 
 Install the dependencies:
 
 ```bash
-bun
+bun install --frozen-lockfile
 ```
 
 ### Development
@@ -64,7 +67,7 @@ To build and run using Docker:
 docker build -t my-app .
 
 # Run the container
-docker run -p 3000:3000 my-app
+docker run --rm -p 3000:3000 my-app
 ```
 
 The containerized application is deployed to ZaneOps, for more information see https://zaneops.dev/tutorials/react-router
