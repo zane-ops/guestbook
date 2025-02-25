@@ -141,7 +141,7 @@ export default function GuestBookPage({
         <Form
           method="POST"
           action="/?index"
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 w-full"
           ref={formRef}
         >
           <h2>
