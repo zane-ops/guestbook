@@ -1,7 +1,7 @@
 import type { RouteConfig } from "@react-router/dev/routes";
-import { route } from "@react-router/dev/routes";
+import { index, route } from "@react-router/dev/routes";
 
 export default [
-  route("", "routes/guestbook.tsx"),
-  route("api/callback/github", "routes/api/callback/github.ts")
+  index("routes/guestbook.tsx"),
+  route("api/auth/callback/github", "routes/api/auth/callback/github.ts")
 ] satisfies RouteConfig;

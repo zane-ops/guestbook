@@ -4,7 +4,7 @@ import { pgTable } from "drizzle-orm/pg-core";
 export const usersTable = pgTable("users", (t) => ({
   github_id: t.varchar({ length: 255 }).notNull().unique(),
   username: t.varchar({ length: 255 }).notNull().unique(),
-  avatar_url: t.varchar({ length: 1000 }).notNull()
+  avatar_url: t.varchar({ length: 1000 })
 }));
 
 export const commentsTable = pgTable("comments", (t) => ({

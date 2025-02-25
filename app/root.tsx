@@ -1,4 +1,6 @@
 import {
+  Links,
+  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -7,6 +9,10 @@ import {
 import type { Route } from "./+types/root";
 
 import appStylesHref from "./app.css?url";
+
+export function meta() {
+  return [{ title: "Guestbook" }] satisfies ReturnType<Route.MetaFunction>;
+}
 
 export default function App() {
   return <Outlet />;
@@ -31,6 +37,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href={appStylesHref} />
+        <Meta />
+        <Links />
       </head>
       <body>
         {children}
