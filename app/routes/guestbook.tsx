@@ -13,7 +13,8 @@ import {
   AlertCircleIcon,
   CheckIcon,
   LoaderIcon,
-  LogOutIcon
+  LogOutIcon,
+  PenIcon
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { Textarea } from "~/components/ui/textarea";
@@ -111,9 +112,9 @@ export default function GuestBookPage({
             disabled={isPending}
           >
             {isPending ? (
-              <LoaderIcon className="animate-spin size-5" />
+              <LoaderIcon className="animate-spin size-4" />
             ) : (
-              <LogOutIcon className="size-5" />
+              <LogOutIcon className="size-4" />
             )}
 
             <span>Sign out</span>
@@ -127,9 +128,9 @@ export default function GuestBookPage({
             disabled={isPending}
           >
             {isPending ? (
-              <LoaderIcon className="animate-spin size-5" />
+              <LoaderIcon className="animate-spin size-4" />
             ) : (
-              <GithubLogo className="size-5" />
+              <GithubLogo className="size-4" />
             )}
             <span>Sign in with github</span>
           </Button>
@@ -163,8 +164,15 @@ export default function GuestBookPage({
               </span>
             )}
           </div>
-          <Button type="submit" name="intent" value="post" className="self-end">
-            Submit
+          <Button
+            type="submit"
+            name="intent"
+            value="post"
+            disabled={isPending}
+            className="disabled:opacity-40 self-end"
+          >
+            {isPending && <LoaderIcon className="animate-spin size-4" />}
+            <span>Submit</span>
           </Button>
         </Form>
       )}
