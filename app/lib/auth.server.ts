@@ -25,15 +25,13 @@ const { getSession, commitSession, destroySession } = createSessionStorage<
   cookie: {
     name: "__session",
     // all of these are optional
-    domain: !(process.env.SITE_URL! as string).includes("localhost")
-      ? process.env.SITE_URL
-      : undefined,
+    domain: process.env.SESSION_DOMAIN ?? "localhost",
     httpOnly: true,
     maxAge: SEVEN_DAYS_IN_SECONDS,
     path: "/",
     sameSite: "lax",
     secrets: [process.env.SESSION_SECRET!],
-    secure: !(process.env.SITE_URL! as string).includes("localhost")
+    secure: !(process.env.SESSION_DOMAIN! as string).includes("localhost")
   },
   async createData(data, expires) {
     const sessionId = nanoid();
