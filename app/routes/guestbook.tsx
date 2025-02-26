@@ -104,37 +104,39 @@ export default function GuestBookPage({
 
       <Form method="POST" action="/?index">
         {user ? (
-          <Button
-            className="rounded-[0.25rem] disabled:opacity-40"
-            variant="destructive"
-            type="submit"
-            name="intent"
-            value="logout"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <LoaderIcon className="animate-spin size-4" />
-            ) : (
-              <LogOutIcon className="size-4" />
-            )}
+          <>
+            <input type="hidden" name="intent" value="logout" />
+            <Button
+              className="rounded-[0.25rem] disabled:opacity-40"
+              variant="destructive"
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <LoaderIcon className="animate-spin size-4" />
+              ) : (
+                <LogOutIcon className="size-4" />
+              )}
 
-            <span>Sign out</span>
-          </Button>
+              <span>Sign out</span>
+            </Button>
+          </>
         ) : (
-          <Button
-            className="rounded-[0.25rem] disabled:opacity-40"
-            type="submit"
-            name="intent"
-            value="login"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <LoaderIcon className="animate-spin size-4" />
-            ) : (
-              <GithubLogo className="size-4" />
-            )}
-            <span>Sign in with github</span>
-          </Button>
+          <>
+            <input type="hidden" name="intent" value="login" />
+            <Button
+              className="rounded-[0.25rem] disabled:opacity-40"
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <LoaderIcon className="animate-spin size-4" />
+              ) : (
+                <GithubLogo className="size-4" />
+              )}
+              <span>Sign in with github</span>
+            </Button>
+          </>
         )}
       </Form>
 
@@ -145,6 +147,7 @@ export default function GuestBookPage({
           className="flex flex-col gap-4 w-full"
           ref={formRef}
         >
+          <input type="hidden" name="intent" value="post" />
           <h2>
             Hello <strong>{user.username}</strong>, please type your message:
           </h2>
@@ -167,8 +170,6 @@ export default function GuestBookPage({
           </div>
           <Button
             type="submit"
-            name="intent"
-            value="post"
             disabled={isPending}
             className="disabled:opacity-40 self-end"
           >
