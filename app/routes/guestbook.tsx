@@ -11,6 +11,7 @@ import {
 import { data, Form, redirect, useNavigation } from "react-router";
 import {
   AlertCircleIcon,
+  ArrowUpRightIcon,
   CheckIcon,
   LoaderIcon,
   LogOutIcon,
@@ -189,6 +190,18 @@ export default function GuestBookPage({
           ))}
         </dl>
       )}
+
+      <hr className="w-full border border-border" />
+      <small>
+        Built with React router & deployed on&nbsp;
+        <a
+          href="https://zaneops.dev"
+          className="underline inline-flex gap-0.5 items-center"
+        >
+          <span>ZaneOps</span>
+          <ArrowUpRightIcon className="size-3.5 relative top-0.5" />
+        </a>
+      </small>
     </main>
   );
 }
