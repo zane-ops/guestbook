@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import type { Route } from "./+types/health";
 import { db } from "~/lib/database";
 import { commentsTable } from "~/lib/database/schema";
@@ -17,7 +16,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       kv.ensureConnection()
     ]);
 
-    return data(
+    return Response.json(
       {
         healthy: true
       },
@@ -26,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       }
     );
   } catch (error) {
-    return data(
+    return Response.json(
       {
         healthy: false
       },
