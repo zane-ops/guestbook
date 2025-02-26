@@ -58,7 +58,7 @@ bun run build
 This template includes :
 
 - A `Dockerfile` to build your app 
-- A workflow file `.github/worklows/deploy-to-zaneops.yaml` for deploying to your ZaneOps instance 
+- A workflow file `.github/worklows/ci.yaml` for deploying to your ZaneOps instance 
 
 To build and run using Docker:
 
