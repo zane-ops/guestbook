@@ -40,7 +40,7 @@ export class RedisKV implements KVStore {
   /**
    * Ensures the Redis client is connected
    */
-  private async ensureConnection(): Promise<void> {
+  public async ensureConnection(): Promise<void> {
     if (!this.isConnected) {
       await this.client.connect();
       this.isConnected = true;

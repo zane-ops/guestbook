@@ -50,7 +50,7 @@ Your application will be available at `http://localhost:5174`.
 Create a production build:
 
 ```bash
-pnpm run build
+bun run build
 ```
 
 ## Deployment
