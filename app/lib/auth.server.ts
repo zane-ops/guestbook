@@ -31,7 +31,7 @@ const { getSession, commitSession, destroySession } = createSessionStorage<
     path: "/",
     sameSite: "lax",
     secrets: [process.env.SESSION_SECRET!],
-    secure: !(process.env.SESSION_DOMAIN! as string).includes("localhost")
+    secure: process.env.SESSION_SECURE === "true"
   },
   async createData(data, expires) {
     const sessionId = nanoid();
