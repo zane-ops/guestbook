@@ -1,6 +1,5 @@
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/guestbook";
-import { GithubLogo } from "~/components/github-logo";
 import {
   commitSession,
   destroySession,
@@ -8,14 +7,21 @@ import {
   getUser,
   type Session
 } from "~/lib/auth.server";
-import { data, Form, redirect, useNavigation } from "react-router";
+import {
+  data,
+  Form,
+  Link,
+  redirect,
+  useNavigation,
+  useSearchParams
+} from "react-router";
 import {
   AlertCircleIcon,
   ArrowUpRightIcon,
   CheckIcon,
   LoaderIcon,
-  LogOutIcon,
-  PenIcon
+  LogInIcon,
+  LogOutIcon
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { Textarea } from "~/components/ui/textarea";
@@ -24,6 +30,7 @@ import { db } from "~/lib/database";
 import { commentsTable, usersTable } from "~/lib/database/schema";
 import { eq } from "drizzle-orm";
 import * as React from "react";
+import { Input } from "~/components/ui/input";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -84,7 +91,7 @@ export default function GuestBookPage({
   }, [navigation.state, actionData]);
 
   return (
-    <main className="p-5 flex flex-col items-start gap-5 max-w-2xl mb-40 mx-4 mt-8 lg:mx-auto">
+    <>
       <h1 className="text-2xl font-medium">sign my guestbook</h1>
 
       {error && (
@@ -122,21 +129,13 @@ export default function GuestBookPage({
             </Button>
           </>
         ) : (
-          <>
-            <input type="hidden" name="intent" value="login" />
-            <Button
-              className="rounded-[0.25rem] disabled:opacity-40"
-              type="submit"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <LoaderIcon className="animate-spin size-4" />
-              ) : (
-                <GithubLogo className="size-4" />
-              )}
-              <span>Sign in with github</span>
-            </Button>
-          </>
+          <Link
+            to="/login"
+            className="underline inline-flex gap-1 items-center"
+          >
+            <LogInIcon className="size-4" />
+            <span>Log in to leave a message</span>
+          </Link>
         )}
       </Form>
 
@@ -203,7 +202,7 @@ export default function GuestBookPage({
           <ArrowUpRightIcon className="size-3.5 relative top-0.5" />
         </a>
       </small>
-    </main>
+    </>
   );
 }
 
@@ -235,12 +234,12 @@ export async function action({ request }: Route.ActionArgs) {
 
 async function loginWithGithub() {
   const searchParams = new URLSearchParams();
-  searchParams.append("client_id", process.env.GITHUB_CLIENT_ID!);
-  searchParams.append("redirect_uri", process.env.GITHUB_REDIRECT_URI!);
+  // searchParams.append("client_id", process.env.GITHUB_CLIENT_ID!);
+  // searchParams.append("redirect_uri", process.env.GITHUB_REDIRECT_URI!);
 
-  throw redirect(
-    `https://github.com/login/oauth/authorize?${searchParams.toString()}`
-  );
+  // throw redirect(
+  //   `https://github.com/login/oauth/authorize?${searchParams.toString()}`
+  // );
 }
 
 async function logout(session: Session) {

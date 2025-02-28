@@ -1,21 +1,37 @@
 import {
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse
+  isRouteErrorResponse,
+  useLocation
 } from "react-router";
 import type { Route } from "./+types/root";
 
 import appStylesHref from "./app.css?url";
+import { ArrowLeftIcon } from "lucide-react";
 
 export function meta() {
   return [{ title: "Guestbook" }] satisfies ReturnType<Route.MetaFunction>;
 }
 
 export default function App() {
-  return <Outlet />;
+  const location = useLocation();
+  return (
+    <main className="p-5 flex flex-col items-start gap-5 max-w-2xl mb-40 mx-4 mt-8 lg:mx-auto">
+      {location.pathname !== "/" && (
+        <div>
+          <Link to="/" className="inline-flex underline items-center gap-1">
+            <ArrowLeftIcon size={15} />
+            <span>Back home</span>
+          </Link>
+        </div>
+      )}
+      <Outlet />
+    </main>
+  );
 }
 
 export function HydrateFallback() {
