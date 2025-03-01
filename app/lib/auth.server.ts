@@ -65,10 +65,10 @@ export async function getUser(session: Session) {
   const users = await db
     .select({
       username: usersTable.username,
-      id: usersTable.github_id
+      id: usersTable.id
     })
     .from(usersTable)
-    .where(eq(usersTable.github_id, session.get("userId") ?? ""));
+    .where(eq(usersTable.id, session.get("userId") ?? ""));
 
   return users.length > 0 ? users[0] : null;
 }

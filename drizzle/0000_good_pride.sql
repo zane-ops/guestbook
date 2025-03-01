@@ -6,11 +6,12 @@ CREATE TABLE "comments" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"github_id" varchar(255) NOT NULL,
+	"id" varchar(255) NOT NULL,
 	"username" varchar(255) NOT NULL,
-	"avatar_url" varchar(1000) NOT NULL,
-	CONSTRAINT "users_github_id_unique" UNIQUE("github_id"),
+	"avatar_url" varchar(1000),
+	"password" varchar(1024),
+	CONSTRAINT "users_id_unique" UNIQUE("id"),
 	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
 --> statement-breakpoint
-ALTER TABLE "comments" ADD CONSTRAINT "comments_author_id_users_github_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("github_id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "comments" ADD CONSTRAINT "comments_author_id_users_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;

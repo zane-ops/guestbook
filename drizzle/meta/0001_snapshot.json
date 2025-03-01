@@ -1,6 +1,6 @@
 {
-  "id": "6367575e-f36b-4d19-93cd-37f28369b707",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a3aa6404-e4ab-4d92-8a50-6028cd7a9fe7",
+  "prevId": "6367575e-f36b-4d19-93cd-37f28369b707",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -84,17 +84,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "avatar_url": {
-          "name": "avatar_url",
-          "type": "varchar(1000)",
-          "primaryKey": false,
-          "notNull": false
-        },
         "password": {
           "name": "password",
           "type": "varchar(1024)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},

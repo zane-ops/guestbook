@@ -1,12 +1,92 @@
 import { LoaderIcon, CheckIcon } from "lucide-react";
-import { Form, Link, useFetcher, useNavigation } from "react-router";
+import { data, Link, redirect, useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/register";
+import { z } from "zod";
+import { commitSession, getSession } from "~/lib/auth.server";
+import argon2 from "argon2";
+import { db } from "~/lib/database";
+import { usersTable } from "~/lib/database/schema";
+import { eq } from "drizzle-orm";
+import { nanoid } from "nanoid";
+
+export async function action({ request }: Route.ActionArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+
+  const formData = await request.formData();
+  const registerSchema = z.object({
+    username: z.string().min(3).trim(),
+    password: z.string().min(8)
+  });
+
+  const result = registerSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (result.error) {
+    return data(
+      {
+        error: result.error.flatten().fieldErrors
+      },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session)
+        }
+      }
+    );
+  }
+
+  const { username, password } = result.data;
+
+  const currentUser = await db
+    .select({ username: usersTable.username })
+    .from(usersTable)
+    .where(eq(usersTable.username, username));
+
+  if (currentUser.length > 0) {
+    return data(
+      {
+        error: {
+          username: ["A user with this username already exists."],
+          password: undefined
+        }
+      },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session)
+        }
+      }
+    );
+  }
+
+  const hash = await argon2.hash(password);
+  const user_id = nanoid();
+
+  await db
+    .insert(usersTable)
+    .values({
+      username,
+      password: hash,
+      id: user_id
+    })
+    .returning();
+
+  session.set("userId", user_id);
+  session.flash("success", "Account created sucessfully");
+  throw redirect("/", {
+    headers: {
+      "Set-Cookie": await commitSession(session)
+    }
+  });
+}
 
 export default function RegisterPage({}: Route.ComponentProps) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof action>();
   const isPending = fetcher.state !== "idle";
+  const errors =
+    fetcher.data !== undefined && "error" in fetcher.data
+      ? fetcher.data.error
+      : null;
 
   return (
     <>
@@ -20,7 +100,13 @@ export default function RegisterPage({}: Route.ComponentProps) {
             placeholder="ex: jonhdoe"
             name="username"
             id="username"
+            aria-describedby="username-error"
           />
+          {errors?.username && (
+            <span id="username-error" className="text-red-500 text-sm">
+              {errors.username}
+            </span>
+          )}
         </fieldset>
         <fieldset>
           <label htmlFor="password">Password</label>
@@ -29,7 +115,13 @@ export default function RegisterPage({}: Route.ComponentProps) {
             placeholder="******"
             name="password"
             id="password"
+            aria-describedby="password-error"
           />
+          {errors?.password && (
+            <span id="password-error" className="text-red-500 text-sm">
+              {errors.password}
+            </span>
+          )}
         </fieldset>
         <Button
           className="rounded-[0.25rem] disabled:opacity-40"

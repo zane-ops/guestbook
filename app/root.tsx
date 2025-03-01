@@ -5,19 +5,40 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  data,
   isRouteErrorResponse,
   useLocation
 } from "react-router";
 import type { Route } from "./+types/root";
 
 import appStylesHref from "./app.css?url";
-import { ArrowLeftIcon } from "lucide-react";
+import { AlertCircleIcon, ArrowLeftIcon, CheckIcon } from "lucide-react";
+import { commitSession, getSession } from "./lib/auth.server";
+import { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
 
 export function meta() {
   return [{ title: "Guestbook" }] satisfies ReturnType<Route.MetaFunction>;
 }
 
-export default function App() {
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+
+  return data(
+    {
+      error: session.get("error"),
+      success: session.get("success")
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session)
+      }
+    }
+  );
+}
+
+export default function App({
+  loaderData: { error, success }
+}: Route.ComponentProps) {
   const location = useLocation();
   return (
     <main className="p-5 flex flex-col items-start gap-5 max-w-2xl mb-40 mx-4 mt-8 lg:mx-auto">
@@ -28,6 +49,21 @@ export default function App() {
             <span>Back home</span>
           </Link>
         </div>
+      )}
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircleIcon className="h-4 w-4" />
+          <AlertTitle>Error!</AlertTitle>
+          <AlertDescription>{error} </AlertDescription>
+        </Alert>
+      )}
+      {success && (
+        <Alert variant="success">
+          <CheckIcon className="h-4 w-4" />
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>{success}</AlertDescription>
+        </Alert>
       )}
       <Outlet />
     </main>

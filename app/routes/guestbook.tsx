@@ -7,30 +7,19 @@ import {
   getUser,
   type Session
 } from "~/lib/auth.server";
+import { data, Form, Link, redirect, useNavigation } from "react-router";
 import {
-  data,
-  Form,
-  Link,
-  redirect,
-  useNavigation,
-  useSearchParams
-} from "react-router";
-import {
-  AlertCircleIcon,
   ArrowUpRightIcon,
-  CheckIcon,
   LoaderIcon,
   LogInIcon,
   LogOutIcon
 } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { Textarea } from "~/components/ui/textarea";
 import { z } from "zod";
 import { db } from "~/lib/database";
 import { commentsTable, usersTable } from "~/lib/database/schema";
 import { eq } from "drizzle-orm";
 import * as React from "react";
-import { Input } from "~/components/ui/input";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -42,7 +31,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       message: commentsTable.message
     })
     .from(commentsTable)
-    .innerJoin(usersTable, eq(commentsTable.author_id, usersTable.github_id));
+    .innerJoin(usersTable, eq(commentsTable.author_id, usersTable.id));
 
   return data(
     {
@@ -50,8 +39,6 @@ export async function loader({ request }: Route.LoaderArgs) {
         .object({ username: z.string() })
         .nullish()
         .parse(await getUser(session)),
-      error: session.get("error"),
-      success: session.get("success"),
       messages
     },
     {
@@ -63,7 +50,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function GuestBookPage({
-  loaderData: { user, error, success, messages },
+  loaderData: { user, messages },
   actionData
 }: Route.ComponentProps) {
   const navigation = useNavigation();
@@ -93,21 +80,6 @@ export default function GuestBookPage({
   return (
     <>
       <h1 className="text-2xl font-medium">sign my guestbook</h1>
-
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircleIcon className="h-4 w-4" />
-          <AlertTitle>Error!</AlertTitle>
-          <AlertDescription>{error} </AlertDescription>
-        </Alert>
-      )}
-      {success && (
-        <Alert variant="success">
-          <CheckIcon className="h-4 w-4" />
-          <AlertTitle>Success</AlertTitle>
-          <AlertDescription>{success}</AlertDescription>
-        </Alert>
-      )}
 
       <Form method="POST" action="/?index">
         {user ? (
