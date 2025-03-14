@@ -1,5 +1,5 @@
 import { LoaderIcon, CheckIcon } from "lucide-react";
-import { data, Link, redirect, useFetcher } from "react-router";
+import { data, href, Link, redirect, useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/register";
@@ -139,7 +139,7 @@ export default function RegisterPage({}: Route.ComponentProps) {
         <p>
           Already have an account ?&nbsp;
           <Link
-            to="/login"
+            to={href("/login")}
             className="underline inline-flex gap-1 items-center"
           >
             login here

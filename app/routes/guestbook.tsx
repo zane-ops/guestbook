@@ -7,7 +7,7 @@ import {
   getUser,
   type Session
 } from "~/lib/auth.server";
-import { data, Form, Link, redirect, useNavigation } from "react-router";
+import { data, Form, href, Link, redirect, useNavigation } from "react-router";
 import {
   ArrowUpRightIcon,
   LoaderIcon,
@@ -102,7 +102,7 @@ export default function GuestBookPage({
           </>
         ) : (
           <Link
-            to="/login"
+            to={href("/login")}
             className="underline inline-flex gap-1 items-center"
           >
             <LogInIcon className="size-4" />
