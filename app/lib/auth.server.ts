@@ -26,7 +26,7 @@ const { getSession, commitSession, destroySession } = createSessionStorage<
     name: "__session",
     // all of these are optional
     domain:
-      process.env.COOLIFY_DOMAIN_FQDN ??
+      process.env.ZANE_DOMAINS?.split(",")[0] ??
       process.env.SESSION_DOMAIN ??
       "localhost",
     httpOnly: true,
