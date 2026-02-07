@@ -1,7 +1,7 @@
-import type { Route } from "./+types/health";
 import { db } from "~/lib/database";
 import { commentsTable } from "~/lib/database/schema";
 import { RedisKV } from "~/lib/kv.server";
+import type { Route } from "./+types/health";
 
 export async function loader({ request }: Route.LoaderArgs) {
   try {
@@ -30,7 +30,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         healthy: false
       },
       {
-        status: 400
+        status: 500
       }
     );
   }

@@ -1,5 +1,15 @@
+import { eq } from "drizzle-orm";
+import {
+  ArrowUpRightIcon,
+  LoaderIcon,
+  LogInIcon,
+  LogOutIcon
+} from "lucide-react";
+import * as React from "react";
+import { data, Form, Link, redirect, useNavigation } from "react-router";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
-import type { Route } from "./+types/guestbook";
+import { Textarea } from "~/components/ui/textarea";
 import {
   commitSession,
   destroySession,
@@ -7,19 +17,9 @@ import {
   getUser,
   type Session
 } from "~/lib/auth.server";
-import { data, Form, Link, redirect, useNavigation } from "react-router";
-import {
-  ArrowUpRightIcon,
-  LoaderIcon,
-  LogInIcon,
-  LogOutIcon
-} from "lucide-react";
-import { Textarea } from "~/components/ui/textarea";
-import { z } from "zod";
 import { db } from "~/lib/database";
 import { commentsTable, usersTable } from "~/lib/database/schema";
-import { eq } from "drizzle-orm";
-import * as React from "react";
+import type { Route } from "./+types/guestbook";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));

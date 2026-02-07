@@ -1,15 +1,15 @@
+import argon2 from "argon2";
+import { eq } from "drizzle-orm";
+import { AlertCircleIcon, CheckIcon, LoaderIcon } from "lucide-react";
 import { data, Link, redirect, useFetcher } from "react-router";
-import type { Route } from "./+types/login";
-import { LoaderIcon, CheckIcon, AlertCircleIcon } from "lucide-react";
+import { z } from "zod";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
-import { getSession, commitSession } from "~/lib/auth.server";
+import { commitSession, getSession } from "~/lib/auth.server";
 import { db } from "~/lib/database";
 import { usersTable } from "~/lib/database/schema";
-import argon2 from "argon2";
-import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
+import type { Route } from "./+types/login";
 
 export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get("Cookie"));

@@ -1,15 +1,15 @@
-import { LoaderIcon, CheckIcon } from "lucide-react";
+import argon2 from "argon2";
+import { eq } from "drizzle-orm";
+import { CheckIcon, LoaderIcon } from "lucide-react";
+import { nanoid } from "nanoid";
 import { data, Link, redirect, useFetcher } from "react-router";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import type { Route } from "./+types/register";
-import { z } from "zod";
 import { commitSession, getSession } from "~/lib/auth.server";
-import argon2 from "argon2";
 import { db } from "~/lib/database";
 import { usersTable } from "~/lib/database/schema";
-import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
+import type { Route } from "./+types/register";
 
 export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get("Cookie"));

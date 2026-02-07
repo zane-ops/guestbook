@@ -1,20 +1,19 @@
+import { AlertCircleIcon, ArrowLeftIcon, CheckIcon } from "lucide-react";
 import {
+  data,
+  isRouteErrorResponse,
   Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  data,
-  isRouteErrorResponse,
   useLocation
 } from "react-router";
 import type { Route } from "./+types/root";
-
 import appStylesHref from "./app.css?url";
-import { AlertCircleIcon, ArrowLeftIcon, CheckIcon } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { commitSession, getSession } from "./lib/auth.server";
-import { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
 
 export function meta() {
   return [{ title: "Guestbook" }] satisfies ReturnType<Route.MetaFunction>;
