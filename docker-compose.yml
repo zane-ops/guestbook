@@ -1,7 +1,9 @@
 x-zane-env:
   POSTGRES_PASSWORD: "{{ generate_password | 32 }}"
-  __DATABASE_URL: "postgres://guestbook:${POSTGRES_PASSWORD}@db:5432/guestbook?schema=public"
-
+  DB_HOST_ENV_NAME: "{{ network_alias | 'db' }}"
+  VALKEY_HOST_ENV_NAME: "{{ network_alias | 'valkey' }}"
+  __DATABASE_URL: "postgres://guestbook:${POSTGRES_PASSWORD}@${DB_HOST_ENV_NAME}:5432/guestbook?schema=public"
+  __REDIS_URL: "redis://:${VALKEY_PASSWORD}@${VALKEY_HOST_ENV_NAME}:6379"
 services:
   db:
     image: postgres:18-alpine
