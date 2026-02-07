@@ -18,6 +18,8 @@ A modern, production-ready template for building full-stack React applications u
 ### Prerequisites
 
 - [Bun](https://bun.sh) >= 1.1.45
+- [Docker](https://docs.docker.com/get-started/get-docker/)
+- [docker-compose](https://docs.docker.com/compose/install)
 
 ### Installation
 
@@ -31,19 +33,19 @@ bun install --frozen-lockfile
 
 Copy `.env.example` to `.env` and provide a `DATABASE_URL` with your connection string.
 
-Run an initial database migration:
-
-```bash
-bun db:migrate
-```
-
 Start the development server with HMR:
 
 ```bash
 bun dev
 ```
 
-Your application will be available at `http://localhost:5174`.
+Run an initial database migration:
+
+```bash
+bun db:migrate
+```
+
+Your application will be available at [http://localhost:5174](http://localhost:5174)
 
 ## Building for Production
 
@@ -58,6 +60,7 @@ bun run build
 This template includes :
 
 - A `Dockerfile` to build your app 
+- A `docker-compose.yml` for deploying the Database & redis to your ZaneOps instance
 - A workflow file `.github/worklows/ci.yaml` for deploying to your ZaneOps instance 
 
 To build and run using Docker:
