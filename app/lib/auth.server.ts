@@ -1,9 +1,9 @@
-import { createSessionStorage } from "react-router";
-import { RedisKV } from "./kv.server";
+import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { createSessionStorage } from "react-router";
 import { db } from "./database";
 import { usersTable } from "./database/schema";
-import { eq } from "drizzle-orm";
+import { RedisKV } from "./kv.server";
 
 const kv = new RedisKV();
 const SEVEN_DAYS_IN_SECONDS = 3600 * 24 * 7;
@@ -25,7 +25,10 @@ const { getSession, commitSession, destroySession } = createSessionStorage<
   cookie: {
     name: "__session",
     // all of these are optional
-    domain: process.env.SESSION_DOMAIN ?? "localhost",
+    domain:
+      process.env.ZANE_DOMAINS?.split(",")[0] ??
+      process.env.SESSION_DOMAIN ??
+      "localhost",
     httpOnly: true,
     maxAge: SEVEN_DAYS_IN_SECONDS,
     path: "/",
